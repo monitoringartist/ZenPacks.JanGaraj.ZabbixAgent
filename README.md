@@ -7,10 +7,13 @@ About
 
 This ZenPack unlocks Zabbix agent functionality in Zenoss. The best benefit is that Zabbix agent is available for wide range of OS (UNIX, Windows, ...)
 Default Zabbix templates adapted for Zenoss are included.
+
 ZenPack is ready for beta production, but I don't recommend it for large environments (>1000 devices), unless you exactly know what are doing.
 Solution design (passive mode only) is the main problem. It'll be improved when active mode for Zabbix agent will be implemented.
-Meanwhile, please test it and any your feedback will be appreciated.   
-![ZabbixOSLinux Template graphs](https://raw.github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgentmaster/image_ZabbixOSLinux-Graphs1.png)
+
+**Meanwhile, please test it and any your feedback will be appreciated.**   
+![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs1.png)                                 
+
 
 Requirements
 ============
@@ -30,9 +33,10 @@ Or if package `zabbix-agent` exists in your distribution repository, you can use
 ZenPack doesn't have any condition for Zabbix agent version. 
 Please check [Zabbix documentation](https://www.zabbix.com/documentation) if you have a problem with installation.     
 Please configure also agent (usually zabbix_agentd.conf file). Edit line with `Server` config:
+
 `Server=<IP_OF_ZENOSS_COLLECTOR(S)>`
-Incoming connections are accepted only from the hosts listed in this settings.
-Then (re)start agent.
+
+Incoming connections are accepted only from the hosts listed in this settings. Then (re)start agent.
 
 Network
 -------
@@ -50,7 +54,8 @@ Download the egg file.
 Copy this file to your Zenoss server and run the following commands as the zenoss
 user.
 
-```zenpack --install ZenPacks.JanGaraj.ZabbixAgent-0.7.0.egg
+```
+zenpack --install ZenPacks.JanGaraj.ZabbixAgent-0.7.0.egg
 zenoss restart
 ```
         
@@ -62,7 +67,8 @@ If you wish to further develop and possibly contribute back to the ZabbixAgent
 ZenPack you should clone the [git repository](https://github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent.git),
 then install the ZenPack in developer mode using the following commands.
 
-```git clone git://github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent.git
+```
+git clone git://github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent.git
 zenpack --link --install ZenPacks.JanGaraj.ZabbixAgent
 zenoss restart
 ```
@@ -130,7 +136,8 @@ Summary:
 - edit your new Datasource:
 Parser must be ZenPacks.JanGaraj.ZabbixAgent.parsers.ZabbixAgentJSON.
 Command template must call provided zabbix_get_zenoss utility with the right parameters: 
-```${here/ZenPackManager/packs/ZenPacks.JanGaraj.ZabbixAgent/path}/libexec/zabbix_get_zenoss -s ${device/id} -p ${here/zZabbixPort} -k "system.cpu.util[,nice]" -d "system.cpu.util.steal" -c ""
+```
+${here/ZenPackManager/packs/ZenPacks.JanGaraj.ZabbixAgent/path}/libexec/zabbix_get_zenoss -s ${device/id} -p ${here/zZabbixPort} -k "system.cpu.util[,nice]" -d "system.cpu.util.steal" -c ""
 ```
 
 Parameters:
