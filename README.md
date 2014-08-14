@@ -121,7 +121,7 @@ Please bear in mind, that CPU is default component template for all Devices. Set
 Event Classes
 -------------
 
-- /Events/Status/Metric
+- /Events/Status/ZabbixAgent
 
 
 Creatig a custom metric
@@ -142,10 +142,15 @@ ${here/ZenPackManager/packs/ZenPacks.JanGaraj.ZabbixAgent/path}/libexec/zabbix_g
 ```
 
 Parameters:
+
 -s ${device/id} - host name or IP of monitored device, I recommend to use ${device/id} as default value
+
 -p ${here/zZabbixPort} - Zabbix agent port on monitored device, zProperty zZabbixPort (with default value 10050) is used here
+
 -k "system.cpu.util[,steal]" - Zabbix item key, see Zabbix manual for parameters and available keys
+
 -d "system.cpu.util.steal" - Zenoss datapoint name
+
 -c "" - Zenoss component id, use it in component template, otherwise you can omit this parameter (default value is "" - no component)
 
 
