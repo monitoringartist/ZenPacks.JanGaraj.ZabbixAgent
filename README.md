@@ -92,7 +92,7 @@ Monitoring Templates
 --------------------
 
 Templates are "imported" from Zabbix and adapted for Zenoss, because Zenoss doesn't support all Zabbix features (especially non numeric metric).
-Please bear in mind, that CPU is default component template for all Devices. Set it up only for Device, which have Zabbix Agent installed.
+Please bear in mind, that CPU is default component template for all Devices. Set it up only for devices, which have Zabbix Agent installed.
 
 - /Devices/rrdTemplates/CPU (Component Template)
 - /Devices/rrdTemplates/ZabbixAppFTPService
@@ -132,24 +132,20 @@ Check Zabbix agent documentation - [available item keys](https://www.zabbix.com/
 
 Summary:
 - create new Datasource, type COMMAND (e.g. name: 'CPU steal time')
-- create one Datapoint for your new datasource, only one datapoint per datasource is supported (e.g. name: 'system.cpu.util.steal')
+- create new Datapoint for your new datasource, only one datapoint per datasource is supported (e.g. name: 'system.cpu.util.steal')
 - edit your new Datasource:
-Parser must be ZenPacks.JanGaraj.ZabbixAgent.parsers.ZabbixAgentJSON.
+Parser must be *ZenPacks.JanGaraj.ZabbixAgent.parsers.ZabbixAgentJSON*.
+
 Command template must call provided zabbix_get_zenoss utility with the right parameters: 
 ```
 ${here/ZenPackManager/packs/ZenPacks.JanGaraj.ZabbixAgent/path}/libexec/zabbix_get_zenoss -s ${device/id} -p ${here/zZabbixPort} -k "system.cpu.util[,nice]" -d "system.cpu.util.steal" -c ""
 ```
 
 Parameters:
-
 -s ${device/id} - host name or IP of monitored device, I recommend to use ${device/id} as default value
-
 -p ${here/zZabbixPort} - Zabbix agent port on monitored device, zProperty zZabbixPort (with default value 10050) is used here
-
 -k "system.cpu.util[,steal]" - Zabbix item key, see Zabbix manual for parameters and available keys
-
 -d "system.cpu.util.steal" - Zenoss datapoint name
-
 -c "" - Zenoss component id, use it in component template, otherwise you can omit this parameter (default value is "" - no component)
 
 
@@ -158,8 +154,11 @@ Extending Zabbix agent metric
   
 You can define your own metric, if some metric, which you need is not provided by Zabbix agent by default. Please refer to Zabbix manual:
 - userparameters
+
 https://www.zabbix.com/documentation/2.2/manual/config/items/userparameters
+
 - loadable modules (Unix only)
+
 https://www.zabbix.com/documentation/2.2/manual/config/items/loadablemodules
 
 
@@ -167,9 +166,9 @@ Screenshots
 ===========
 
 A few graph screenshots from device with ZabbixOSLinux template for example:
-![ZabbixOSLinux Template graphs](https://raw.github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgentmaster/image_ZabbixOSLinux-Graphs2.png)
-![ZabbixOSLinux Template graphs](https://raw.github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgentmaster/image_ZabbixOSLinux-Graphs3.png)
-![ZabbixOSLinux Template graphs](https://raw.github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgentmaster/image_ZabbixOSLinux-Graphs4.png)
+![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs2.png)
+![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs3.png)
+![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs4.png)
 
 
 Performance notes
@@ -177,7 +176,8 @@ Performance notes
 
 ZenPacks.JanGaraj.ZabbixAgent 0.7.0 create one call per one metric. It's not very efficient, so this call should be very quick. 
 ZenPacks.JanGaraj.ZabbixAgent libexec folders contains a few version of zabbix_get_zenoss utility. Default used version is python:
-```[root@device libexec]# time ./zabbix_get_zenoss.py -s zabbix -d system.cpu.load.all.avg1 -k "system.cpu.load[all,avg1]"
+```
+[root@device libexec]# time ./zabbix_get_zenoss.py -s zabbix -d system.cpu.load.all.avg1 -k "system.cpu.load[all,avg1]"
 {"values":{"":{"system.cpu.load.all.avg1":0.000000}},"events":[{"severity":0,"summary":"Clearing previous problems","message":"Clearing previous problems","eventClass":"/Status/ZabbixAgent","eventKey":"system.cpu.load[all,avg1]"},{"severity":0,"summary":"Clearing previous problems","message":"Clearing previous problems","eventClass":"/Status/ZabbixAgent","eventKey":"connection"}]}
 
 real    0m0.079s
@@ -188,7 +188,8 @@ sys     0m0.033s
 For performance testing purpose, also C version has been created. Of course you will need to compile it, what can be challenge, so some precompiled version (ubuntu, centos, ...) are provided.
 
 Performance test with compiled version:
-```[root@device libexec]# time ./zabbix_get_zenoss_centos5 -s zabbix -d system.cpu.load.all.avg1 -k "system.cpu.load[all,avg1]"
+```
+[root@device libexec]# time ./zabbix_get_zenoss_centos5 -s zabbix -d system.cpu.load.all.avg1 -k "system.cpu.load[all,avg1]"
 {"values":{"":{"system.cpu.load.all.avg1":0.000000}},"events":[{"severity":0,"summary":"Clearing previous problems","message":"Clearing previous problems","eventClass":"/Status/ZabbixAgent","eventKey":"system.cpu.load[all,avg1]"},{"severity":0,"summary":"Clearing previous problems","message":"Clearing previous problems","eventClass":"/Status/ZabbixAgent","eventKey":"connection"}]}
 real    0m0.007s
 user    0m0.000s
@@ -199,18 +200,20 @@ Generally compiled version is 10x more faster than python version in this synthe
 So let's go to check performance with zencommand (zencommand run -d zabbix -v 10). Tested device is zabbix VM with binded ZabbixOSLinux template and with 33 datapoints.
 
 0.6 second takes RUNNING->IDLE for compiled C version of zabbix_get_zenoss version:
-```2014-08-09 14:01:27,832 DEBUG zen.collector.scheduler: Task zabbix 60 Local changing state from RUNNING to FETCH_DATA
+```
+2014-08-09 14:01:27,832 DEBUG zen.collector.scheduler: Task zabbix 60 Local changing state from RUNNING to FETCH_DATA
 2014-08-09 14:01:28,426 DEBUG zen.collector.scheduler: Task zabbix 60 Local changing state from STORE_PERF_DATA to IDLE
 ```
 
 3.2 seconds takes RUNNING->IDLE for python version of zabbix_get_zenoss version:
-```2014-08-09 14:06:50,461 DEBUG zen.collector.scheduler: Task zabbix 60 Local changing state from RUNNING to FETCH_DATA
+```
+2014-08-09 14:06:50,461 DEBUG zen.collector.scheduler: Task zabbix 60 Local changing state from RUNNING to FETCH_DATA
 2014-08-09 14:06:53,702 DEBUG zen.collector.scheduler: Task zabbix 60 Local changing state from STORE_PERF_DATA to IDLE
 ```
 
 I've made also test with one second CPU utilization pooling for one device and it was 10% CPU utilization for python version vs 1% CPU utilization for comiled C.
 Graph of CPU utilization, when one second pooling was active: 
-![One second CPU utilization pooling](https://raw.github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_CPU_utilization_one_second_pooling.png)
+![One second CPU utilization pooling](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_CPU_utilization_one_second_pooling.png)
 
 
 Conclusion:
