@@ -1,19 +1,21 @@
-======================================
-ZenPacks.JanGaraj.ZabbixAgent - beta 1
-======================================
+ZenPacks.JanGaraj.ZabbixAgent
+=============================
 
 About
 =====
 
-This ZenPack unlocks Zabbix agent functionality in Zenoss. The best benefit is that Zabbix agent is available for wide range of OS (UNIX, Windows, ...)
-Default Zabbix templates adapted for Zenoss are included.
+This ZenPack unlocks Zabbix agent functionality in Zenoss. The best benefit is 
+that Zabbix agent is available for wide range of OS (UNIX, Windows, ...). Default 
+Zabbix templates adapted for Zenoss are included.
 
-ZenPack is ready for beta production, but I don't recommend it for large environments (>1000 devices), unless you exactly know what are doing.
-Solution design (passive mode only) is the main problem. It'll be improved when active mode for Zabbix agent will be implemented.
+Please donate to author, so he can continue to publish other awesome projects 
+for free:
 
-**Meanwhile, please test it and any your feedback will be appreciated.**   
-![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs1.png)                                 
+[![Paypal donate button](http://jangaraj.com/img/github-donate-button02.png)]
+(https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8LB6J222WRUZ4)
 
+**Please test it and provide your feedback.**   
+![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/monitoringartist/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs1.png)                                 
 
 Requirements
 ============
@@ -21,9 +23,9 @@ Requirements
 Zenoss
 ------
 
-You must first have, or install, Zenoss 4. This ZenPack was tested
-against Zenoss 4.2.5. You can download the free Core
-version of Zenoss from http://community.zenoss.org/community/download.
+You must first have, or install, Zenoss 4. This ZenPack was tested against 
+Zenoss 4.2.5. You can download the free Core version of Zenoss 
+from http://community.zenoss.org/community/download.
 
 Zabbix agent
 ------------
@@ -42,7 +44,6 @@ Network
 -------
 
 Zenoss collector/master must have access to Zabbix agents (default port 10050) on monitored devices.
-
 
 Installation
 ============
@@ -64,11 +65,12 @@ Developer Installation (link mode)
 ----------------------------------
 
 If you wish to further develop and possibly contribute back to the ZabbixAgent
-ZenPack you should clone the [git repository](https://github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent.git),
+ZenPack you should clone the [git repository]
+(https://github.com/monitoringartist/ZenPacks.JanGaraj.ZabbixAgent.git),
 then install the ZenPack in developer mode using the following commands.
 
 ```
-git clone git://github.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent.git
+git clone git://github.com/monitoringartist/ZenPacks.JanGaraj.ZabbixAgent.git
 zenpack --link --install ZenPacks.JanGaraj.ZabbixAgent
 zenoss restart
 ```
@@ -76,23 +78,25 @@ zenoss restart
 zProperties
 ===========
 
-ZenPack creates zProperty *zZabbixPort* with default value 10050 (default Zabbix agent port). 
-If your Zabbix agent is configured with another listen port, change *zZabbixPort* accordingly.  
+ZenPack creates zProperty *zZabbixPort* with default value 10050 (default Zabbix 
+agent port). If your Zabbix agent is configured with another listen port, 
+change *zZabbixPort* accordingly.  
 
 Usage
 =====
 
-Go to the specific device (yes, it needs to already be added) and bind right template(s).
-
+Go to the specific device (yes, it needs to already be added) and bind right 
+template(s).
 
 Installing the ZenPack will add the following items to your Zenoss system:
-
 
 Monitoring Templates
 --------------------
 
-Templates are "imported" from Zabbix and adapted for Zenoss, because Zenoss doesn't support all Zabbix features (especially non numeric metric).
-Please bear in mind, that CPU is default component template for all Devices. Set it up only for devices, which have Zabbix Agent installed.
+Templates are "imported" from Zabbix and adapted for Zenoss, because Zenoss 
+doesn't support all Zabbix features (especially non numeric metric). Please bear 
+in mind, that CPU is default component template for all Devices. 
+Set it up only for devices, where Zabbix Agent is installed.
 
 - /Devices/rrdTemplates/CPU (Component Template)
 - /Devices/rrdTemplates/ZabbixAppFTPService
@@ -117,22 +121,23 @@ Please bear in mind, that CPU is default component template for all Devices. Set
 - /Devices/rrdTemplates/ZabbixOSSolaris
 - /Devices/rrdTemplates/ZabbixOSWindows 
 
-
 Event Classes
 -------------
 
 - /Events/Status/ZabbixAgent
 
-
 Creatig a custom metric
 =======================
 
-You can use all metric provided by Zabbix agent in passive mode. For example all file relative metrics (e.g. log, logrt) are available only in active mode.
-Check Zabbix agent documentation - [available item keys](https://www.zabbix.com/documentation/2.2/manual/config/items/itemtypes/zabbix_agent#supported_item_keys)
+You can use all metric provided by Zabbix agent in passive mode. For example all 
+file relative metrics (e.g. log, logrt) are available only in active mode. Check 
+Zabbix agent documentation - [available item keys]
+(https://www.zabbix.com/documentation/2.2/manual/config/items/itemtypes/zabbix_agent#supported_item_keys)
 
 Summary:
 - create new Datasource, type COMMAND (e.g. name: 'CPU steal time')
-- create new Datapoint for your new datasource, only one datapoint per datasource is supported (e.g. name: 'system.cpu.util.steal')
+- create new Datapoint for your new datasource, only one datapoint per datasource 
+is supported (e.g. name: 'system.cpu.util.steal')
 - edit your new Datasource:
 Parser must be *ZenPacks.JanGaraj.ZabbixAgent.parsers.ZabbixAgentJSON*.
 
@@ -143,21 +148,26 @@ ${here/ZenPackManager/packs/ZenPacks.JanGaraj.ZabbixAgent/path}/libexec/zabbix_g
 
 Parameters:
 
--s ${device/id} - host name or IP of monitored device, I recommend to use ${device/id} as default value
+-s ${device/id} - host name or IP of monitored device, I recommend to use 
+${device/id} as default value
 
--p ${here/zZabbixPort} - Zabbix agent port on monitored device, zProperty zZabbixPort (with default value 10050) is used here
+-p ${here/zZabbixPort} - Zabbix agent port on monitored device, zProperty 
+zZabbixPort (with default value 10050) is used here
 
--k "system.cpu.util[,steal]" - Zabbix item key, see Zabbix manual for parameters and available keys
+-k "system.cpu.util[,steal]" - Zabbix item key, see Zabbix manual for parameters 
+and available keys
 
 -d "system.cpu.util.steal" - Zenoss datapoint name
 
--c "" - Zenoss component id, use it in component template, otherwise you can omit this parameter (default value is "" - no component)
-
+-c "" - Zenoss component id, use it in component template, otherwise you can omit 
+this parameter (default value is "" - no component)
 
 Extending Zabbix agent metric
 ============================= 
   
-You can define your own metric, if some metric, which you need is not provided by Zabbix agent by default. Please refer to Zabbix manual:
+You can define your own metric, if some metric, which you need is not provided 
+by Zabbix agent by default. Please refer to Zabbix manual:
+
 - userparameters
 
 https://www.zabbix.com/documentation/2.2/manual/config/items/userparameters
@@ -166,21 +176,22 @@ https://www.zabbix.com/documentation/2.2/manual/config/items/userparameters
 
 https://www.zabbix.com/documentation/2.2/manual/config/items/loadablemodules
 
-
 Screenshots
 ===========
 
 A few graph screenshots from device with ZabbixOSLinux template for example:
-![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs2.png)
-![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs3.png)
-![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs4.png)
-
+![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/monitoringartist/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs2.png)
+![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/monitoringartist/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs3.png)
+![ZabbixOSLinux Template graphs](https://raw.githubusercontent.com/monitoringartist/ZenPacks.JanGaraj.ZabbixAgent/master/image_ZabbixOSLinux-Graphs4.png)
 
 Performance notes
 =================
 
-ZenPacks.JanGaraj.ZabbixAgent 0.7.0 create one call per one metric. It's not very efficient, so this call should be very quick. 
-ZenPacks.JanGaraj.ZabbixAgent libexec folders contains a few version of zabbix_get_zenoss utility. Default used version is python:
+ZenPacks.JanGaraj.ZabbixAgent 0.7.0 use one TCP call/connection per metric. It's not 
+very efficient, so this call should be very quick. ZenPacks.JanGaraj.ZabbixAgent 
+libexec folders contains also C version of zabbix_get_zenoss utility for better 
+perfomance. Default used version is python:
+
 ```
 [root@device libexec]# time ./zabbix_get_zenoss.py -s zabbix -d system.cpu.load.all.avg1 -k "system.cpu.load[all,avg1]"
 {"values":{"":{"system.cpu.load.all.avg1":0.000000}},"events":[{"severity":0,"summary":"Clearing previous problems","message":"Clearing previous problems","eventClass":"/Status/ZabbixAgent","eventKey":"system.cpu.load[all,avg1]"},{"severity":0,"summary":"Clearing previous problems","message":"Clearing previous problems","eventClass":"/Status/ZabbixAgent","eventKey":"connection"}]}
@@ -190,7 +201,9 @@ user    0m0.043s
 sys     0m0.033s
 ```
 
-For performance testing purpose, also C version has been created. Of course you will need to compile it, what can be challenge, so some precompiled version (ubuntu, centos, ...) are provided.
+For performance testing purpose, also C version has been created. You will need 
+to compile it, what can be challenge, so some precompiled version 
+(Ubuntu, CentOS, ...) are provided.
 
 Performance test with compiled version:
 ```
@@ -201,8 +214,10 @@ user    0m0.000s
 sys     0m0.007s
 ```
   
-Generally compiled version is 10x more faster than python version in this synthetic performance test.
-So let's go to check performance with zencommand (zencommand run -d zabbix -v 10). Tested device is zabbix VM with binded ZabbixOSLinux template and with 33 datapoints.
+Generally compiled version is 10x more faster than python version in this 
+synthetic performance test. So let's go to check performance with zencommand 
+(zencommand run -d zabbix -v 10). Tested device is zabbix VM with binded 
+ZabbixOSLinux template and with 33 datapoints.
 
 0.6 second takes RUNNING->IDLE for compiled C version of zabbix_get_zenoss version:
 ```
@@ -216,16 +231,18 @@ So let's go to check performance with zencommand (zencommand run -d zabbix -v 10
 2014-08-09 14:06:53,702 DEBUG zen.collector.scheduler: Task zabbix 60 Local changing state from STORE_PERF_DATA to IDLE
 ```
 
-I've made also test with one second CPU utilization pooling for one device and it was 10% CPU utilization for python version vs 1% CPU utilization for comiled C.
-Graph of CPU utilization, when one second pooling was active: 
-![One second CPU utilization pooling](https://raw.githubusercontent.com/jangaraj/ZenPacks.JanGaraj.ZabbixAgent/master/image_CPU_utilization_one_second_pooling.png)
+I've made also test with one second CPU utilization pooling for one device and 
+it was 10% CPU utilization for python version vs 1% CPU utilization for 
+compiled C version. Graph of CPU utilization, when one second pooling was active: 
+![One second CPU utilization pooling]
+(https://raw.githubusercontent.com/monitoringartist/ZenPacks.JanGaraj.ZabbixAgent/master/image_CPU_utilization_one_second_pooling.png)
 
 
 Conclusion:
 
-Python is amazing option for developers. I love "import pdb; pdb.set_trace();" feature for python debugging also in Zenoss.
-But if speed is critical for you, then consider binary code over interterpreted.
-
+Python is amazing option for developers. I love "import pdb; pdb.set_trace();" 
+feature for python debugging also in Zenoss. But if speed is critical for you, 
+then consider binaries (compiled C code).
 
 TODO list
 =========
@@ -233,12 +250,15 @@ TODO list
 - implement Zabbix agent datasource
 - implement daemon zenzabbixserver for active/passive agent mode and better performance
 - implement Zabbix modeller Filesystem/Interface plugin (low level discovery functionality of Zabbix agent)
-- improve speed/perfomance (cython, pypy, ...)  
-
-
-Thanks
+- improve speed/perfomance (cython, pypy, ...)
+  
+Author
 ======
 
-- [Zenoss](http://www.zenoss.com/) - send your appreciation to Zenoss guys via Andrew D Kirch AKA trelane (Zenoss community manager) 
-- [Zabbix](http://www.zabbix.com/) - you can support developement of this open source (e.g. Zabbix agent for Android devices) on [Zabbix Development Services](http://www.zabbix.com/development_services.php)
-- [Jan Garaj](http://www.jangaraj.com/) - endorse me for Zenoss/Zabbix skill on [Jan Garaj LinkedIn](https://www.linkedin.com/in/jangaraj)
+[Devops Monitoring zExpert](http://www.jangaraj.com), who loves monitoring 
+systems, which start with letter Z. Those are Zabbix and Zenoss.
+
+Professional monitoring services:
+
+[![Monitoring Artist](http://monitoringartist.com/img/github-monitoring-artist-logo.jpg)]
+(http://www.monitoringartist.com)
